@@ -1,3 +1,0 @@
-{% with mod_alert=mod_alert %}
-    {% include home_page %}
-{% endwith %}

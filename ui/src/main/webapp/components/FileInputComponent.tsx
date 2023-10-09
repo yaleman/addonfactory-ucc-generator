@@ -3,7 +3,7 @@ import File from '@splunk/react-ui/File';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import FileConstants from '../constants/constant';
+import FileConstants from '../constants/fileInputConstant';
 import { getFormattedMessage } from '../util/messageUtil';
 
 const FileWrapper = styled(File)`
@@ -13,8 +13,26 @@ const FileWrapper = styled(File)`
     }
 `;
 
-function isValidFile(fileType, fileSize, supportedFileTypes, maxFileSize) {
-    if (!supportedFileTypes.includes(fileType)) {
+interface FileInputComponentProps {
+    field: string;
+    controlOptions: {
+        fileSupportMessage?: string;
+        supportedFileTypes: string[];
+        maxFileSize?: number;
+    };
+    disabled: boolean;
+    handleChange: (field: string, data: string) => void;
+    encrypted?: boolean;
+    fileNameToDisplay?: string;
+}
+
+function isValidFile(
+    fileType: string | undefined,
+    fileSize: number,
+    supportedFileTypes: string[],
+    maxFileSize: number
+) {
+    if (!fileType || !supportedFileTypes.includes(fileType)) {
         return (
             <span style={{ color: 'red' }}>
                 {getFormattedMessage(supportedFileTypes.length === 1 ? 28 : 24, [
@@ -29,7 +47,7 @@ function isValidFile(fileType, fileSize, supportedFileTypes, maxFileSize) {
     return true;
 }
 
-function FileInputComponent(props) {
+function FileInputComponent(props: FileInputComponentProps) {
     const { field, disabled, controlOptions, handleChange, fileNameToDisplay, encrypted } = props;
     const {
         fileSupportMessage,
@@ -44,18 +62,18 @@ function FileInputComponent(props) {
      use fileNameToDisplay during editing to get
      the possibility of removal previously added file
     */
-    const [fileName, setFileName] = useState(fileNameToDisplay || '');
+    const [fileName, setFileName] = useState<string | null>(fileNameToDisplay || '');
 
     /* 
       if the file data is encrypted and we display its name
       then we display error message "file needs to be reuploaded"
       as there is no access to data inside due to encription
      */
-    const [errorMsg, setErrorMsg] = useState(
-        fileNameToDisplay && encrypted ? 'Please reupload this file' : ''
+    const [errorMsg, setErrorMsg] = useState<JSX.Element | string>(
+        fileNameToDisplay && encrypted ? FileConstants.REUPLOAD_MESSAGE : ''
     );
 
-    const handleAddFiles = (files) => {
+    const handleAddFiles = (files: File[]) => {
         if (files.length) {
             const file = files[0];
 
@@ -75,14 +93,14 @@ function FileInputComponent(props) {
                 if (isValid === true) {
                     setErrorMsg('');
                     try {
-                        handleChange(field, textDecoder.decode(fileReader.result));
+                        handleChange(field, textDecoder.decode(fileReader.result as ArrayBuffer));
                     } catch (err) {
                         // eslint-disable-next-line no-console
                         console.log(err);
                     }
                 } else {
                     setErrorMsg(isValid);
-                    handleChange(field, '##INVALID_FILE##');
+                    handleChange(field, FileConstants.INVALID_FILE_MESSAGE);
                 }
                 setFileName(file.name);
             };
