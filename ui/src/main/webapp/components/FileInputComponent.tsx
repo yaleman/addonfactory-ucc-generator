@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import File from '@splunk/react-ui/File';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
 import FileConstants from '../constants/fileInputConstant';
 import { getFormattedMessage } from '../util/messageUtil';
@@ -130,14 +129,5 @@ function FileInputComponent(props: FileInputComponentProps) {
         </FileWrapper>
     );
 }
-
-FileInputComponent.propTypes = {
-    field: PropTypes.string,
-    controlOptions: PropTypes.object,
-    disabled: PropTypes.bool,
-    handleChange: PropTypes.func,
-    fileNameToDisplay: PropTypes.string,
-    encrypted: PropTypes.bool,
-};
 
 export default FileInputComponent;
