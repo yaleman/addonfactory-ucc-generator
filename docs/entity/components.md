@@ -477,9 +477,9 @@ This feature allows you to upload a single file.
 
 | Property                                                   | Type   | Description                                                | Default Value |
 | ---------------------------------------------------------- | ------ | ---------------------------------------------------------- | ------------- |
-| fileSupportMessage                                          | string | To display message inside file component.                   | -             |
-| supportedFileTypes<span class="required-asterisk">*</span> | array  | A list of the file types that the user can upload.          | -             |
-| maxFileSize                                                | number | To set the maximum file size in KB that a user can upload.  | 500KB         |
+| fileSupportMessage                                         | string | To display message inside file component.                  | -             |
+| supportedFileTypes<span class="required-asterisk">*</span> | array  | A list of the file types that the user can upload.         | -             |
+| maxFileSize                                                | number | To set the maximum file size in KB that a user can upload. | 500KB         |
 
 Example usage below:
 
